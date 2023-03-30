@@ -1,20 +1,60 @@
-﻿// opengl_3.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <Windows.h>
+#include <tchar.h>
+#pragma comment(lib, "opengl32.lib")
+#pragma comment(lib,"glut32.lib")
+#include "glut.h"
+#include <stdlib.h>
+#include <cmath>
 
-#include <iostream>
-
-int main()
-{
-    std::cout << "Hello World!\n";
+void setPixel(int x, int y) {
+    glPointSize(5);
+    glBegin(GL_POINTS);
+    glVertex2i(x, y);
+    glEnd();
+    glFlush();
 }
 
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
+void linesBrasenhem(int x0, int y0, int xend, int yend) {
+    int dx = abs(xend - x0), dy = abs(yend - y0);
+    int p = 2 * dy - dx;
+    int x, y;
+    if (x0 > xend) {
+        x = xend;
+        y = yend;
+        xend = x0;
+    }
+    else
+    {
+        x = x0;
+        y = y0;
+    }
+    setPixel(x, y);
 
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
+    while (x < xend) {
+        x++;
+        if (p < 0)
+            p += 2 * dy;
+        else
+        {
+            y++;
+            p += 2 * (dy - dx);
+        }
+        setPixel(x, y);
+    }
+}
+
+void _display(void)
+{
+
+}
+
+int main(int argc, char** argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitWindowPosition(0, 100);
+    glutInitWindowSize(500, 500);
+    glutCreateWindow("Пример ");
+    glutDisplayFunc(_display);
+    glutMainLoop();
+}
