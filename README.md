@@ -1,2 +1,2 @@
-# opengl_3
+# OpenGL
 Brazenhem lines algorithm
